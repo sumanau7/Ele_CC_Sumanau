@@ -1,0 +1,164 @@
+{% raw %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello World!</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!-- Latest compiled AngularJS -->
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+</head>
+<body>
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <br>
+        Ele Coding Assignment<br>
+        <br>
+        <button ng-click="ccDetails(); ccDetailsTable.show=!ccDetailsTable.show" type="button" class="btn btn-info">CC details with avg bill amount</button>
+        <button ng-click="ccPaymentCycle(); ccPaymentCycleTable.show=!ccPaymentCycleTable.show" type="button" class="btn btn-info">CC Payment Cycle(Penalty if any)</button>
+        <button ng-click="ccMonthlyPayment(); ccMonthlyPaymentTable.show=!ccMonthlyPaymentTable.show" type="button" class="btn btn-info">CC Monthly and avg bill amount</button>
+        <button ng-click="ccScoreGrid(); ccScoreGridTable.show=!ccScoreGridTable.show" type="button" class="btn btn-info">CC Score Grid</button>
+        <br>
+        <table ng-show="ccDetailsTable" class="table">
+          <thead>
+            <tr>
+              <th>Bank Name</th>
+              <th>CC Number</th>
+              <th>Start Date</th>
+              <th>Due Date</th>
+              <th>Avg Min due</th>
+              <th>Avg total outstanding</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+          <tr ng-repeat="(ccNumber,ccDetail) in ccDetailsData">
+            <td>{{ ccDetail[0] }} </td>
+            <td>{{ ccNumber }} </td>
+            <td>{{ ccDetail[1] }}</td>
+            <td>{{ ccDetail[2] }} </td>
+            <td>{{ ccDetail[3] | number:2 }} </td>
+            <td>{{ ccDetail[4] | number:2 }} </td>
+          </tr>
+          </tbody>
+        </table>
+        <table ng-show="ccPaymentCycleTable" class="table">
+          <thead>
+            <tr>
+              <th>CC Number</th>
+              <th>Total Amount</th>
+              <th>Amount Paid</th>
+              <th>Due Date</th>
+              <th>Payment date</th>
+              <th>Delay</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+          <tr ng-repeat="(ccNumber,ccDetail) in ccPaymentCycleData">
+            <td>{{ ccNumber }} </td>
+            <td>{{ ccDetail[0][0] | number:2 }} </td>
+            <td>{{ ccDetail[0][1] | number:2 }}</td>
+            <td>{{ mySplit(ccDetail[0][2],0) }}</td>
+            <td>{{ mySplit(ccDetail[0][3],0) }} </td>
+            <td>{{ ccDetail[0][4] }} </td>
+          </tr>
+          </tbody>
+        </table>
+        <table ng-show="ccMonthlyPaymentTable" class="table">
+          <thead>
+            <tr>
+              <th>CC Number</th>
+              <th>Date</th>
+              <th>Amount Paid</th>
+              <th>Average Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+          <tr ng-repeat="(ccNumber,ccDetail) in ccMonthlyPaymentData | orderBy:'-id':true">
+            <td>7172</td>
+            <td>{{ ccNumber }}</td>
+            <td>{{ ccDetail[0] }}</td>
+            <td>{{ ccDetail[1] | number:2 }}</td>
+            <td>{{ ccDetail[2] | number:2 }}</td>
+          </tr>
+          </tbody>
+        </table>
+        <table ng-show="ccScoreGridTable" class="table">
+          <thead>
+            <tr>
+              <th>Bank Name</th>
+              <th>CC Number</th>
+              <th>Start Date</th>
+              <th>Due Date</th>
+              <th>Avg Min due</th>
+              <th>Avg total outstanding</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+          <tr ng-repeat="(ccNumber,ccDetail) in ccScoreGridData">
+            <td>{{ ccDetail[0] }} </td>
+            <td>{{ ccNumber }} </td>
+            <td>{{ ccDetail[1] }}</td>
+            <td>{{ ccDetail[2] }} </td>
+            <td>{{ ccDetail[3] | number:2}} </td>
+            <td>{{ ccDetail[4] | number:2 }} </td>
+          </tr>
+          </tbody>
+        </table>
+    </div>
+</body>
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', ['$scope', '$http', function($scope, $http) {
+
+    $scope.ccDetails = function() {
+        $http.get('/ccDetails').success(function(response) {
+          $scope.ccDetailsData = response;
+          // {"7172":["HDFC","16/Apr/2016","21/Jun/2015",329.17612244897964,682.487448979592]}
+          console.log(response)
+        });
+    }
+
+    $scope.ccPaymentCycle = function() {
+        $http.get('/ccPaymentCycle').success(function(response) {
+          $scope.ccPaymentCycleData = response;
+          console.log(JSON.stringify(response))
+
+        });
+    }
+    $scope.ccMonthlyPayment = function() {
+        $http.get('/ccMonthlyPayment').success(function(response) {
+          $scope.ccMonthlyPaymentData = response;
+          console.log(response)
+
+        });
+    }
+
+    $scope.ccScoreGrid = function() {
+      $http.get('/ccScoreGrid').success(function(response){
+        $scope.ccScoreGridData = response;
+          console.log(JSON.stringify(response))
+
+      })
+    }
+    $scope.mySplit = function(string, nb) {
+    var array = string.split('/');
+    return array[nb];
+}
+
+
+}]);
+
+
+</script>
+</html>
+{% endraw %}

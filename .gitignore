@@ -1,0 +1,4 @@
+google-appengine-launcher
+local_data.sqlite3
+*.pyc
+main.pyc
