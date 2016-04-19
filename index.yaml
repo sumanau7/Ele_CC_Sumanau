@@ -12,14 +12,32 @@ indexes:
 
 - kind: CreditCardEvent
   properties:
-  - name: __key__
-    direction: desc
+  - name: cc_number
+  - name: type
+  - name: amount_spent
+  - name: bank_id
+  - name: late_payment_charges
+  - name: payment_date
+  - name: payment_due_date
+  - name: sms_transaction
+  - name: total_amount_credited
 
 - kind: CreditCardEvent
   properties:
   - name: total_amount_credited
   - name: type
   - name: payment_date
+
+- kind: CreditCardEvent
+  properties:
+  - name: type
+  - name: amount_spent
+  - name: bank_id
+  - name: late_payment_charges
+  - name: payment_date
+  - name: payment_due_date
+  - name: sms_transaction
+  - name: total_amount_credited
 
 - kind: CreditCardEvent
   properties:
@@ -34,22 +52,4 @@ indexes:
 - kind: CreditCardEvent
   properties:
   - name: type
-  - name: cc_number
-  - name: current_outstanding_bill
-  - name: min_due
-
-- kind: CreditCardEvent
-  properties:
-  - name: type
   - name: payment_date
-
-- kind: CreditCardEvent
-  properties:
-  - name: type
-  - name: payment_date
-  - name: total_amount_credited
-
-- kind: CreditCardEvent
-  properties:
-  - name: type
-  - name: total_amount_credited

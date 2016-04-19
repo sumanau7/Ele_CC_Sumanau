@@ -32,23 +32,49 @@
               <th>CC Number</th>
               <th>Start Date</th>
               <th>Due Date</th>
-              <th>Avg Min due</th>
-              <th>Avg total outstanding</th>
+              <th>Avg Bill Amount</th>
             </tr>
           </thead>
           <tbody>
           <tr>
-          <tr ng-repeat="(ccNumber,ccDetail) in ccDetailsData">
+          <tr ng-repeat="(ccNumber,ccDetail) in ccDetailsData" ng-click="getDetails();">
             <td>{{ ccDetail[0] }} </td>
             <td>{{ ccNumber }} </td>
             <td>{{ ccDetail[1] }}</td>
             <td>{{ ccDetail[2] }} </td>
-            <td>{{ ccDetail[3] | number:2 }} </td>
-            <td>{{ ccDetail[4] | number:2 }} </td>
+            <td><button type="button" class="btn btn-default">{{ ccDetail[3] | number:2 }}</button></td>
           </tr>
           </tbody>
         </table>
-        <table ng-show="ccPaymentCycleTable" class="table">
+        <table ng-table="ccTable" class="table">
+          <thead>
+            <tr>
+              <th>Bank Name</th>
+              <th>Card Bill Amount</th>
+              <th>Paid Amount</th>
+              <th>Due Date</th>
+              <th>Payment Date</th>
+              <th>Delay</th>
+              <th>Penalty</th>
+              <th>SMS Transaction</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+          <tr ng-repeat="ccTx in ccDetailData">
+            <td>{{ ccTx[0] }} </td>
+            <td>{{ ccTx[1] }} </td>
+            <td>{{ ccTx[2] }} </td>
+            <td>{{ ccTx[3] }} </td>
+            <td>{{ ccTx[4] }} </td>
+            <td>{{ ccTx[5] }} </td>
+            <td>{{ ccTx[6] }} </td>
+            <td>{{ ccTx[7] }} </td>
+            <td>{{ ccTx[8] }} </td>
+          </tr>
+          </tbody>
+        </table>
+<!--         <table ng-show="ccPaymentCycleTable" class="table">
           <thead>
             <tr>
               <th>CC Number</th>
@@ -113,7 +139,7 @@
             <td>{{ ccDetail[4] | number:2 }} </td>
           </tr>
           </tbody>
-        </table>
+        </table> -->
     </div>
 </body>
 <script>
@@ -153,7 +179,18 @@ app.controller('myCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.mySplit = function(string, nb) {
     var array = string.split('/');
     return array[nb];
-}
+    }
+
+    $scope.getDetails = function() {
+        $scope.ccNumber = this.ccNumber
+        $scope.ccDetail = this.ccDetail
+        console.log($scope.ccNumber, $scope.ccDetail);
+        $http.get('/ccDetail?cc_number=' + $scope.ccNumber).success(function(response){
+        $scope.ccDetailData = response;
+          console.log(JSON.stringify(response))
+
+      })
+    };
 
 
 }]);

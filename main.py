@@ -1,6 +1,6 @@
 # Flask Imports
 
-from flask import Flask
+from flask import Flask, request
 from flask import render_template
 
 # App Imports
@@ -26,24 +26,24 @@ def hello():
 
 
 def cc_calculation(cc_bill):
-    response_dict = collections.OrderedDict()
+    response_dict = {}
     # Calculating total min due and total outstanding amount for each card
     for bill in cc_bill:
         cc_number = response_dict.get(bill.cc_number, 0)
         # sum up total min due and total outstanding amount and increase the count to find average.
         if cc_number:
-            # { cc_number: (bank_name [0], start_date [1] , due_Date [2] , min_due [3] , current_outstanding_bill [4],
-            #  total_card_events[5]) }
+            # { cc_number: (bank_name [0], start_date [1] , due_Date [2] , current_outstanding_bill [3],
+            #  total_card_events[4]) }
             response_dict[bill.cc_number] = (bill.bank_id, bill.date_added, bill.payment_due_date,\
-             cc_number[3] + bill.min_due, cc_number[4] + bill.current_outstanding_bill, \
-                cc_number[5] + 1)
+             cc_number[3] + bill.current_outstanding_bill, \
+                cc_number[4] + 1)
         else:
             # Initially there will no key with cc number
-            response_dict[bill.cc_number] = (bill.bank_id, bill.date_added, bill.payment_due_date, bill.min_due, bill.current_outstanding_bill, 0)
+            response_dict[bill.cc_number] = (bill.bank_id, bill.date_added, bill.payment_due_date, bill.current_outstanding_bill, 0)
     # Calculating average for min due and total outstanding amount using total instances for that card.
     for cc_number,value in response_dict.iteritems():
-        response_dict[cc_number] = (value[0], value[1].strftime('%d/%b/%Y'), value[2].strftime('%d/%b/%Y'), value[3]/value[5], value[4]/value[5]) 
-        return response_dict
+        response_dict[cc_number] = (value[0], value[1].strftime('%d/%b/%Y'), value[2].strftime('%d/%b/%Y'), value[3]/value[4]) 
+    return response_dict
 
 @app.route('/ccDetails')
 def cc_details():
@@ -56,6 +56,36 @@ def cc_details():
     # Initialize empty dictionary
     response_dict = cc_calculation(cc_bill)
     return json.dumps(response_dict)
+
+@app.route('/ccDetail')
+def cc_detail():
+    # Get all CC Bill Statements
+    # Breaking expression to improve readibility
+    try:
+        cc_number = int(request.args.get('cc_number'))
+    except:
+        return 'Invalid cc'
+    cc_bill = CreditCardEvent.query(CreditCardEvent.type=='CCBillPayment', CreditCardEvent.cc_number==cc_number)
+    # bank_id, amount_spent, total_amount_credited, payment_due_date, payment_date, penalty
+    # sms_transaction  
+    cc_bill = cc_bill.fetch(projection=[CreditCardEvent.bank_id, CreditCardEvent.amount_spent, \
+        CreditCardEvent.total_amount_credited, CreditCardEvent.payment_due_date, \
+        CreditCardEvent.payment_date, \
+        CreditCardEvent.late_payment_charges, CreditCardEvent.sms_transaction])
+    response_list = []
+    for cc in cc_bill:
+        bank_id = cc.bank_id,
+        amount_spent = cc.amount_spent,
+        total_amount_credited = cc.total_amount_credited,
+        payment_due_date = cc.payment_due_date.strftime('%d/%b/%Y'),
+        payment_date = cc.payment_date.strftime('%d/%b/%Y'),
+        delay = (cc.payment_due_date - cc.payment_date).days,
+        penalty = cc.late_payment_charges,
+        sms_transaction = cc.sms_transaction
+        # prepare response list
+        response_list.append([bank_id, amount_spent, total_amount_credited,\
+         payment_due_date, payment_date, delay, penalty, sms_transaction])
+    return json.dumps(response_list)
 
 @app.route('/ccPaymentCycle')
 def cc_payment_cycle():

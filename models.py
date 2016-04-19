@@ -22,6 +22,8 @@ class CreditCardEvent(ndb.Model):
     current_outstanding_bill = ndb.FloatProperty(default=0)
     payment_date = ndb.DateTimeProperty(auto_now_add=False, default=None)
     bank_id = ndb.StringProperty(default=None)
+    late_payment_charges = ndb.FloatProperty(default=0)
+    sms_transaction = ndb.StringProperty()
 
 # Example of adding Monthly credit card bill notification SMS in NDB Datastore
 # cc = CreditCardEvent()
