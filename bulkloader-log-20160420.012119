@@ -1,0 +1,24 @@
+[INFO     2016-04-20 01:21:19,998 bulkloader.py] Logging to bulkloader-log-20160420.012119
+[INFO     2016-04-20 01:21:19,998 bulkloader.py] Throttling transfers:
+[INFO     2016-04-20 01:21:19,999 bulkloader.py] Bandwidth: 250000 bytes/second
+[INFO     2016-04-20 01:21:19,999 bulkloader.py] HTTP connections: 8/second
+[INFO     2016-04-20 01:21:19,999 bulkloader.py] Entities inserted/fetched/modified: 20/second
+[INFO     2016-04-20 01:21:20,000 bulkloader.py] Batch Size: 10
+[INFO     2016-04-20 01:21:20,028 bulkloader.py] Opening database: bulkloader-progress-20160420.012119.sql3
+[INFO     2016-04-20 01:21:20,099 bulkloader.py] Opening database: bulkloader-results-20160420.012119.sql3
+[DEBUG    2016-04-20 01:21:20,150 adaptive_thread_pool.py] [WorkerThread-0] WorkerThread: started
+[DEBUG    2016-04-20 01:21:20,151 adaptive_thread_pool.py] [WorkerThread-1] WorkerThread: started
+[DEBUG    2016-04-20 01:21:20,152 adaptive_thread_pool.py] [WorkerThread-2] WorkerThread: started
+[DEBUG    2016-04-20 01:21:20,153 adaptive_thread_pool.py] [WorkerThread-3] WorkerThread: started
+[DEBUG    2016-04-20 01:21:20,154 adaptive_thread_pool.py] [WorkerThread-4] WorkerThread: started
+[DEBUG    2016-04-20 01:21:20,155 adaptive_thread_pool.py] [WorkerThread-5] WorkerThread: started
+[DEBUG    2016-04-20 01:21:20,155 adaptive_thread_pool.py] [WorkerThread-6] WorkerThread: started
+[DEBUG    2016-04-20 01:21:20,156 adaptive_thread_pool.py] [WorkerThread-7] WorkerThread: started
+[DEBUG    2016-04-20 01:21:20,157 adaptive_thread_pool.py] [WorkerThread-8] WorkerThread: started
+[DEBUG    2016-04-20 01:21:20,158 bulkloader.py] Configuring remote_api. url_path = /_ah/remote_api, servername = localhost:49515
+[DEBUG    2016-04-20 01:21:20,158 adaptive_thread_pool.py] [WorkerThread-9] WorkerThread: started
+[DEBUG    2016-04-20 01:21:20,158 bulkloader.py] Bulkloader using app_id: dev~None
+[INFO     2016-04-20 01:21:20,159 bulkloader.py] Connecting to localhost:49515/_ah/remote_api
+[ERROR    2016-04-20 01:21:20,267 bulkloader.py] Unable to download kind stats for all-kinds download.
+[ERROR    2016-04-20 01:21:20,267 bulkloader.py] Kind stats are generated periodically by the appserver
+[ERROR    2016-04-20 01:21:20,267 bulkloader.py] Kind stats are not available on dev_appserver.

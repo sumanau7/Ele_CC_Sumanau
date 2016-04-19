@@ -38,7 +38,7 @@ def cc_calculation(cc_bill):
              + cc_number[2] + bill.current_outstanding_bill, cc_number[3] + 1)
         else:
             # Initially there will no key with cc number
-            response_dict[bill.cc_number] = (bill.bank_id, bill.date_added, bill.current_outstanding_bill, 0)
+            response_dict[bill.cc_number] = (bill.bank_id, bill.date_added, bill.current_outstanding_bill, 1)
     # Calculating average for min due and total outstanding amount using total instances for that card.
     for cc_number,value in response_dict.iteritems():
         response_dict[cc_number] = (value[0], value[1].strftime('%d'), value[2]/value[3]) 
