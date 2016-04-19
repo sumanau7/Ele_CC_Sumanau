@@ -21,9 +21,9 @@
         Ele Coding Assignment<br>
         <br>
         <button ng-click="ccDetails(); ccDetailsTable.show=!ccDetailsTable.show" type="button" class="btn btn-info">CC details with avg bill amount</button>
-        <button ng-click="ccPaymentCycle(); ccPaymentCycleTable.show=!ccPaymentCycleTable.show" type="button" class="btn btn-info">CC Payment Cycle(Penalty if any)</button>
+<!--         <button ng-click="ccPaymentCycle(); ccPaymentCycleTable.show=!ccPaymentCycleTable.show" type="button" class="btn btn-info">CC Payment Cycle(Penalty if any)</button>
         <button ng-click="ccMonthlyPayment(); ccMonthlyPaymentTable.show=!ccMonthlyPaymentTable.show" type="button" class="btn btn-info">CC Monthly and avg bill amount</button>
-        <button ng-click="ccScoreGrid(); ccScoreGridTable.show=!ccScoreGridTable.show" type="button" class="btn btn-info">CC Score Grid</button>
+        <button ng-click="ccScoreGrid(); ccScoreGridTable.show=!ccScoreGridTable.show" type="button" class="btn btn-info">CC Score Grid</button> -->
         <br>
         <table ng-show="ccDetailsTable" class="table">
           <thead>
@@ -31,7 +31,6 @@
               <th>Bank Name</th>
               <th>CC Number</th>
               <th>Start Date</th>
-              <th>Due Date</th>
               <th>Avg Bill Amount</th>
             </tr>
           </thead>
@@ -40,9 +39,8 @@
           <tr ng-repeat="(ccNumber,ccDetail) in ccDetailsData" ng-click="getDetails();">
             <td>{{ ccDetail[0] }} </td>
             <td>{{ ccNumber }} </td>
-            <td>{{ ccDetail[1] }}</td>
-            <td>{{ ccDetail[2] }} </td>
-            <td><button type="button" class="btn btn-default">{{ ccDetail[3] | number:2 }}</button></td>
+            <td>{{ ccDetail[1] }} of every month</td>
+            <td><button type="button" class="btn btn-default">{{ ccDetail[2] | number:2 }}</button></td>
           </tr>
           </tbody>
         </table>
