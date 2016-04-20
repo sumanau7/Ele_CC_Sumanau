@@ -12,6 +12,11 @@ indexes:
 
 - kind: CreditCardEvent
   properties:
+  - name: __key__
+    direction: desc
+
+- kind: CreditCardEvent
+  properties:
   - name: cc_number
   - name: type
   - name: amount_spent
@@ -53,3 +58,13 @@ indexes:
   properties:
   - name: type
   - name: payment_date
+
+- kind: CreditCardEvent
+  properties:
+  - name: type
+  - name: payment_due_date
+  - name: bank_id
+  - name: cc_number
+  - name: current_outstanding_bill
+  - name: date_added
+  - name: min_due

@@ -31,6 +31,7 @@
               <th>Bank Name</th>
               <th>CC Number</th>
               <th>Start Date</th>
+              <th>Due Date</th>
               <th>Avg Bill Amount</th>
             </tr>
           </thead>
@@ -40,7 +41,8 @@
             <td>{{ ccDetail[0] }} </td>
             <td>{{ ccNumber }} </td>
             <td>{{ ccDetail[1] }} of every month</td>
-            <td><button type="button" class="btn btn-default">{{ ccDetail[2] | number:2 }}</button></td>
+            <td>After {{ ccDetail[2] }} days</td>
+            <td><button type="button" class="btn btn-default">{{ ccDetail[3] | number:2 }}</button></td>
           </tr>
           </tbody>
         </table>
@@ -60,15 +62,14 @@
           <tbody>
           <tr>
           <tr ng-repeat="ccTx in ccDetailData">
-            <td>{{ ccTx[0] }} </td>
-            <td>{{ ccTx[1] }} </td>
-            <td>{{ ccTx[2] }} </td>
-            <td>{{ ccTx[3] }} </td>
-            <td>{{ ccTx[4] }} </td>
-            <td>{{ ccTx[5] }} </td>
-            <td>{{ ccTx[6] }} </td>
+            <td>{{ ccTx[0][0] }} </td>
+            <td>{{ ccTx[1][0] }} </td>
+            <td>{{ ccTx[2][0] }} </td>
+            <td>{{ ccTx[3][0] }} </td>
+            <td>{{ ccTx[4][0] }} </td>
+            <td>{{ ccTx[5][0] }} </td>
+            <td>{{ ccTx[6][0] }} </td>
             <td>{{ ccTx[7] }} </td>
-            <td>{{ ccTx[8] }} </td>
           </tr>
           </tbody>
         </table>

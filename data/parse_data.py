@@ -437,7 +437,6 @@ for datum in data:
             cc.payment_due_date = datetime.strptime(bill_generation_message[0][2], '%d/%m/%Y')
             cc.sms_transaction = datum['text']
             cc.bank_id = datum['number'].split('-')[1]
-            print datum['number'].split('-')[1]
             cc.put()
 
         if bill_payment_message:

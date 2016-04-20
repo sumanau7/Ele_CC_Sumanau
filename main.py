@@ -34,21 +34,21 @@ def cc_calculation(cc_bill):
         if cc_number:
             # { cc_number: (bank_name [0], start_date [1] , due_Date [2] , current_outstanding_bill [3],
             #  total_card_events[4]) }
-            response_dict[bill.cc_number] = (bill.bank_id, bill.date_added,\
-             + cc_number[2] + bill.current_outstanding_bill, cc_number[3] + 1)
+            response_dict[bill.cc_number] = (bill.bank_id, bill.date_added, ((bill.payment_due_date - cc_number[2][1]).days, bill.payment_due_date),\
+              cc_number[3] + bill.current_outstanding_bill, cc_number[4] + 1)
         else:
             # Initially there will no key with cc number
-            response_dict[bill.cc_number] = (bill.bank_id, bill.date_added, bill.current_outstanding_bill, 1)
+            response_dict[bill.cc_number] = (bill.bank_id, bill.date_added, (0,bill.payment_due_date), bill.current_outstanding_bill, 1)
     # Calculating average for min due and total outstanding amount using total instances for that card.
     for cc_number,value in response_dict.iteritems():
-        response_dict[cc_number] = (value[0], value[1].strftime('%d'), value[2]/value[3]) 
+        response_dict[cc_number] = (value[0], value[1].strftime('%d'), value[2][0], value[3]/value[4]) 
     return response_dict
 
 @app.route('/ccDetails')
 def cc_details():
     # Get CC Bill Statements Notifications
     # Breaking expression to improve readibility
-    cc_bill = CreditCardEvent.query(CreditCardEvent.type=='CCBill')
+    cc_bill = CreditCardEvent.query(CreditCardEvent.type=='CCBill').order(CreditCardEvent.payment_due_date)
     cc_bill = cc_bill.fetch(projection=[CreditCardEvent.bank_id, CreditCardEvent.date_added, \
         CreditCardEvent.payment_due_date, CreditCardEvent.cc_number, \
         CreditCardEvent.min_due, CreditCardEvent.current_outstanding_bill])
@@ -84,6 +84,7 @@ def cc_detail():
         # prepare response list
         response_list.append([bank_id, amount_spent, total_amount_credited,\
          payment_due_date, payment_date, delay, penalty, sms_transaction])
+        print response_list
     return json.dumps(response_list)
 
 @app.route('/ccPaymentCycle')
